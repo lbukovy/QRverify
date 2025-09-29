@@ -1,0 +1,19 @@
+<!doctype html><html><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+<title>Document Verification</title></head><body>
+<div class="container"><div class="card">
+  <h1>Document Verification (Demo)</h1>
+  <div class="meta">Registered by: {{ issuer.name if issuer and issuer.name else "Unknown Issuer" }}</div>
+  <table class="table">
+    <tr><th>Doc ID</th><th>Title</th><th>Issued</th><th>Status</th></tr>
+    {% for d in docs %}
+    <tr>
+      <td><a class="code" href="{{ url_for('verify', doc_id=d.doc_id) }}">{{ d.doc_id }}</a></td>
+      <td>{{ d.title }}</td><td>{{ d.issued_at }}</td>
+      <td>{% if d.revoked_at %}Revoked{% else %}Active{% endif %}</td>
+    </tr>
+    {% endfor %}
+  </table>
+  <p class="small">Tip: open a Doc ID and upload a PDF to check exact match.</p>
+</div></div><div class="footer">© Demo</div></body></html>
