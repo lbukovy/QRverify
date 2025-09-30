@@ -1,55 +1,64 @@
 <!DOCTYPE html>
-<html lang="sk">
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>QR Verifier</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
-  <!-- Tailwind (voliteľné, ak používaš) -->
   <script src="https://cdn.tailwindcss.com"></script>
-  <!-- html5-qrcode -->
   <script src="https://unpkg.com/html5-qrcode"></script>
 </head>
-<body class="min-h-screen bg-gray-50 text-gray-900">
+<body class="min-h-screen bg-gray-50 text-gray-900 font-mono">
 
-  <header class="p-6 border-b bg-white sticky top-0 z-10">
-    <div class="max-w-4xl mx-auto flex items-center justify-between">
-      <h1 class="text-2xl font-semibold">QR Verifier</h1>
+  <header class="p-6 border-b bg-white shadow">
+    <div class="max-w-5xl mx-auto flex items-center justify-between">
+      <h1 class="text-2xl font-bold tracking-wide">QR Verifier</h1>
+      <span class="text-xs text-gray-500">Build: {{ config.get("VERSION", "1.0") }}</span>
     </div>
   </header>
 
-  <main class="max-w-4xl mx-auto p-6 space-y-6">
-    <section class="bg-white p-6 rounded-2xl shadow-sm">
-      <h2 class="text-xl font-semibold mb-4">1) Skenovanie QR kódu cez kameru</h2>
-      <div id="reader" class="rounded-xl overflow-hidden border"></div>
+  <main class="max-w-5xl mx-auto p-6 space-y-6">
+    <section class="bg-white p-6 rounded-xl shadow-sm border">
+      <h2 class="text-lg font-semibold mb-4">1) Scan QR code via Camera</h2>
+      <div id="reader" class="rounded-lg overflow-hidden border h-64"></div>
       <div class="mt-4 flex gap-3">
-        <button id="btnStart" class="px-4 py-2 rounded-lg bg-black text-white">Spustiť skener</button>
-        <button id="btnStop" class="px-4 py-2 rounded-lg bg-gray-200">Zastaviť</button>
-        <select id="cameraSelect" class="border rounded-lg px-3 py-2"></select>
+        <button id="btnStart" class="px-4 py-2 rounded bg-black text-white">Start Scanner</button>
+        <button id="btnStop" class="px-4 py-2 rounded bg-gray-200">Stop</button>
+        <select id="cameraSelect" class="border rounded px-3 py-2"></select>
       </div>
     </section>
 
-    <section class="bg-white p-6 rounded-2xl shadow-sm">
-      <h2 class="text-xl font-semibold mb-4">2) Nahrať obrázok s QR</h2>
-      <input id="fileInput" type="file" accept="image/*" class="block w-full border rounded-lg p-3">
+    <section class="bg-white p-6 rounded-xl shadow-sm border">
+      <h2 class="text-lg font-semibold mb-4">2) Upload QR Image</h2>
+      <input id="fileInput" type="file" accept="image/*" class="block w-full border rounded p-3">
     </section>
 
-    <section id="resultSection" class="bg-white p-6 rounded-2xl shadow-sm hidden">
-      <div class="flex items-center justify-between mb-2">
-        <h2 class="text-xl font-semibold">Výsledok</h2>
-        <span id="statusPill" class="px-3 py-1 rounded-full text-sm"></span>
+    <section id="resultSection" class="bg-white p-6 rounded-xl shadow-sm border hidden">
+      <div class="flex items-center justify-between mb-3">
+        <h2 class="text-lg font-semibold">Verification Result</h2>
+        <span id="statusPill" class="px-3 py-1 rounded-full text-xs"></span>
       </div>
-      <textarea id="decodedText" class="w-full min-h-[120px] border rounded-lg p-3 font-mono text-sm" readonly></textarea>
-      <ul id="matchedRules" class="list-disc pl-6 text-sm mt-2"></ul>
-      <div id="cryptoResult" class="mt-2 text-sm text-gray-600"></div>
+      <div class="grid gap-4">
+        <div>
+          <h3 class="font-medium mb-1">Decoded Payload</h3>
+          <textarea id="decodedText" class="w-full min-h-[100px] border rounded p-3 text-sm" readonly></textarea>
+        </div>
+        <div>
+          <h3 class="font-medium mb-1">Matched Rules</h3>
+          <ul id="matchedRules" class="list-disc pl-6 text-sm"></ul>
+        </div>
+        <div>
+          <h3 class="font-medium mb-1">HMAC-SHA256 Validation</h3>
+          <div id="cryptoResult" class="text-sm text-gray-700"></div>
+        </div>
+      </div>
     </section>
   </main>
 
-  <footer class="max-w-4xl mx-auto p-6 text-xs text-gray-500">
-    <p>© 2025 QR Verifier</p>
+  <footer class="max-w-5xl mx-auto p-6 text-xs text-gray-500">
+    <p>© 2025 QR Verifier — Internal Validation Tool</p>
   </footer>
 
-  <!-- Scripts -->
   <script src="{{ url_for('static', filename='js/config.js') }}"></script>
   <script src="{{ url_for('static', filename='app.js') }}"></script>
 </body>
