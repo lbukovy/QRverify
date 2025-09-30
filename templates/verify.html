@@ -1,49 +1,31 @@
-<!doctype html><html><head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
-<title>Verify Document</title></head><body>
-<div class="container"><div class="card">
-  <h1>Document Verification</h1>
-  <div class="meta">Registered by: {{ issuer.name if issuer and issuer.name else "Unknown Issuer" }}</div>
-  {% if doc.revoked_at %}
-    <div class="badge bad">❌ Revoked — {{ doc.revoked_at }}</div>
-  {% else %}
-    <div class="badge ok">✅ Record found — Registered document</div>
-  {% endif %}
+{% extends 'layout.html' %}
+{% block content %}
+<div class="bg-white border rounded-xl p-6 space-y-4">
+  <div class="flex items-center justify-between">
+    <h1 class="text-lg font-semibold">Verify document</h1>
+    <div class="text-xs">Doc ID: <span class="font-semibold">{{ doc_id }}</span></div>
+  </div>
 
-  <div class="row">
-    <div class="col">
-      <h3>Document details</h3>
-      <table class="table">
-        <tr><th>Doc ID</th><td><span class="code">{{ doc.doc_id }}</span></td></tr>
-        <tr><th>Title</th><td>{{ doc.title }}</td></tr>
-        <tr><th>Issued</th><td>{{ doc.issued_at }}</td></tr>
-        <tr><th>Fingerprint (SHA-256)</th><td><span class="code">{{ doc.sha256 }}</span></td></tr>
-        <tr><th>Scans</th><td>{{ doc.scans }}</td></tr>
-        <tr><th>Status</th><td>{% if doc.revoked_at %}Revoked{% else %}Active{% endif %}</td></tr>
-      </table>
-      <p class="small">Registration alone ≠ proof of content. Upload the PDF for an exact match.</p>
-    </div>
-    <div class="col">
-      <h3>Compare your file</h3>
-      <form method="post" enctype="multipart/form-data">
-        <label>Select PDF to compare</label>
-        <input type="file" name="file" accept="application/pdf" required>
-        <button type="submit">Upload & Compare</button>
-      </form>
-      {% if result %}
-        {% if result == "exact" %}
-          <div class="badge ok">✅ Authentic — Exact match</div>
-          <p class="small">The uploaded file matches the registered fingerprint.</p>
-        {% elif result == "mismatch" %}
-          <div class="badge bad">❌ Content mismatch</div>
-          <p class="small">Uploaded SHA-256: <span class="code">{{ uploaded_hash }}</span></p>
-          <p class="small">Registered SHA-256: <span class="code">{{ doc.sha256 }}</span></p>
-        {% elif result == "invalid_upload" %}
-          <div class="badge warn">⚠️ Invalid upload</div>
-          <p class="small">Please upload a PDF document.</p>
-        {% endif %}
+  <div class="text-sm">
+    <div>Link authenticity (HMAC over doc_id): 
+      {% if sig_ok %}
+        <span class="px-2 py-0.5 rounded bg-green-100 text-green-700">OK</span>
+      {% else %}
+        <span class="px-2 py-0.5 rounded bg-red-100 text-red-700">INVALID</span>
       {% endif %}
     </div>
   </div>
-</div></div><div class="footer">© Demo</div></body></html>
+
+  <form action="{{ url_for('verify_upload') }}" method="post" enctype="multipart/form-data" class="space-y-3">
+    <input type="hidden" name="doc_id" value="{{ doc_id }}">
+    <input type="hidden" name="sig" value="{{ request.args.get('sig','') }}">
+    <div>
+      <label class="block text-sm font-medium mb-1">Upload full document (PDF or image)</label>
+      <input type="file" name="file" accept=".pdf,image/*" class="border rounded w-full p-2">
+    </div>
+    <button class="px-4 py-2 rounded bg-black text-white">Verify</button>
+  </form>
+
+  <p class="text-xs text-gray-500">We compute SHA-256 of the uploaded file and compare with the original hash in our records.</p>
+</div>
+{% endblock %}

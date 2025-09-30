@@ -1,0 +1,38 @@
+{% extends 'layout.html' %}
+{% block content %}
+<div class="bg-white border rounded-xl p-6 space-y-4">
+  <div class="flex items-center justify-between">
+    <h1 class="text-lg font-semibold">Result</h1>
+    <div class="text-xs">Doc ID: <span class="font-semibold">{{ doc_id }}</span></div>
+  </div>
+
+  <div class="grid gap-3">
+    <div class="text-sm">
+      <div>Uploaded file: <span class="font-semibold">{{ file_name }}</span></div>
+      <div>Uploaded SHA-256: <code class="break-all">{{ uploaded_sha }}</code></div>
+    </div>
+
+    {% if record %}
+      <div class="text-sm">
+        <div>Original SHA-256: <code class="break-all">{{ record['sha256'] }}</code></div>
+        {% if record.get('title') %}<div>Title: {{ record['title'] }}</div>{% endif %}
+        {% if record.get('amount') %}<div>Amount: {{ record['amount'] }} {{ record.get('currency','') }}</div>{% endif %}
+      </div>
+    {% else %}
+      <div class="text-sm text-red-700">No record for this Doc ID in database.</div>
+    {% endif %}
+
+    <div>
+      {% if match %}
+        <div class="px-3 py-2 rounded bg-green-100 text-green-700 inline-block">MATCH ✔ The uploaded file matches our original.</div>
+      {% else %}
+        <div class="px-3 py-2 rounded bg-red-100 text-red-700 inline-block">NO MATCH ✖ The uploaded file does not match the original.</div>
+      {% endif %}
+    </div>
+  </div>
+
+  <div class="mt-4">
+    <a href="{{ url_for('verify', id=doc_id, sig=request.form.get('sig','')) }}" class="text-sm underline">Verify another file</a>
+  </div>
+</div>
+{% endblock %}
