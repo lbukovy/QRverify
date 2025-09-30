@@ -1,3 +1,4 @@
+
 from flask import Flask, render_template, request
 import json, os, hashlib, datetime, argparse, sys
 
@@ -79,4 +80,4 @@ if __name__ == "__main__":
         doc_id, sha = register_pdf(args.init, title=os.path.basename(args.init))
         print(f"Registered.\nDoc ID: {doc_id}\nSHA-256: {sha}")
     else:
-        app.run(host="0.0.0.0", port=5000, debug=True)
+        app.run(host="0.0.0.0", port=5000)
