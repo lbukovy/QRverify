@@ -1,12 +1,22 @@
 {
-  "INV-2025-TEST": {
-    "sha256": "PUT_SHA256_OF_ORIGINAL_PDF_HERE",
-    "title": "Invoice 2025 TEST",
-    "amount": "1234.56",
-    "currency": "EUR"
+  "DOC-2025-0001": {
+    "sha256": "803144cfe3d06d2d4e1aabdc04b1be162cca4e0298d2b7b0f33222aaf2239312",
+    "title": "DOC-2025-0001 / VHS Hold acc conf VER.pdf",
+    "seal": "SAXO-64135-923-1716"
   },
-  "INV-2025-0001": {
-    "sha256": "410fe9c2dec535ff26c415b0eea45ff9731f03ce018466d6c776167a74c7e6fe",
-    "title": "INV-2025-0001 / 22PKH_acc_conf_with_QR_small.pdf"
+  "DOC-2025-0002": {
+    "sha256": "454faff481f2fcdd2331d7429163d3e2d75959c4185f27f0797b4695d10a0730",
+    "title": "DOC-2025-0002 / VHS Devel acc conf VER.pdf",
+    "seal": "SAXO-09007-742-3015"
+  },
+  "DOC-2025-0003": {
+    "sha256": "df99bc6815eadbedff66fb20e01cbf62eeaa1c389d778260c61b84fa1351232c",
+    "title": "DOC-2025-0003 / Karol Urban acc conf VER.pdf",
+    "seal": "SAXO-24128-567-8072"
+  },
+  "DOC-2025-0004": {
+    "sha256": "1693c1f87d3c5545cabb62f0d8aaa89ce650e7d2dae0d3c8841d9a2b04e3cf77",
+    "title": "DOC-2025-0004 / Pavel Dubaj acc conf VER.pdf",
+    "seal": "SAXO-04517-184-1344"
   }
 }
