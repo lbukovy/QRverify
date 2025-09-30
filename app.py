@@ -29,7 +29,7 @@ os.makedirs(UPLOAD_DIR, exist_ok=True)
 def load_db():
     """Bezpečné načítanie databázy dokumentov pri každom volaní."""
     try:
-        with open(DOCS_DB_PATH, "r", encoding="utf-8") as f:
+        with open(DOCS_DB_PATH, "r", encoding="utf-8-sig") as f:
             data = json.load(f)
         app.logger.info(f"[QRV] Loaded docs_db.json from {DOCS_DB_PATH}; keys={list(data.keys())}")
         return data
