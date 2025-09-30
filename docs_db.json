@@ -6,6 +6,7 @@
     "currency": "EUR"
   },
   "INV-2025-0001": {
-  "sha256": "410fe9c2dec535ff26c415b0eea45ff9731f03ce018466d6c776167a74c7e6fe",
-  "title": "INV-2025-0001 / 22PKH_acc_conf_with_QR_small.pdf"
+    "sha256": "410fe9c2dec535ff26c415b0eea45ff9731f03ce018466d6c776167a74c7e6fe",
+    "title": "INV-2025-0001 / 22PKH_acc_conf_with_QR_small.pdf"
+  }
 }
