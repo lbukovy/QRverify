@@ -2,7 +2,7 @@ import os
 import hmac
 import hashlib
 import json
-from flask import Flask, request, render_template, redirect, url_for, flash
+from flask import Flask, request, render_template, redirect, url_for, flash, Response
 from werkzeug.utils import secure_filename
 
 # --- Config (nezmenené hodnoty + robustné cesty) ---
@@ -29,6 +29,7 @@ os.makedirs(UPLOAD_DIR, exist_ok=True)
 def load_db():
     """Bezpečné načítanie databázy dokumentov pri každom volaní."""
     try:
+        # utf-8-sig odstráni prípadný BOM
         with open(DOCS_DB_PATH, "r", encoding="utf-8-sig") as f:
             data = json.load(f)
         app.logger.info(f"[QRV] Loaded docs_db.json from {DOCS_DB_PATH}; keys={list(data.keys())}")
@@ -105,7 +106,7 @@ def verify_upload():
     )
 
 
-# Nenápadný debug endpoint – užitočné po deploy (môžeš si nechať)
+# --- Debug endpointy ---
 @app.route("/_debug")
 def _debug():
     try:
@@ -120,6 +121,16 @@ def _debug():
         "db_mtime": mtime,
         "upload_dir": UPLOAD_DIR,
     }
+
+
+@app.route("/_debug/dbraw")
+def _debug_dbraw():
+    try:
+        with open(DOCS_DB_PATH, "r", encoding="utf-8-sig") as f:
+            txt = f.read()
+        return Response(txt[:4096], mimetype="text/plain; charset=utf-8")
+    except Exception as e:
+        return {"error": str(e), "db_path": DOCS_DB_PATH}, 500
 
 
 if __name__ == "__main__":
