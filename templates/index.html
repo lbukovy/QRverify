@@ -1,19 +1,56 @@
-<!doctype html><html><head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
-<title>Document Verification</title></head><body>
-<div class="container"><div class="card">
-  <h1>Document Verification (Demo)</h1>
-  <div class="meta">Registered by: {{ issuer.name if issuer and issuer.name else "Unknown Issuer" }}</div>
-  <table class="table">
-    <tr><th>Doc ID</th><th>Title</th><th>Issued</th><th>Status</th></tr>
-    {% for d in docs %}
-    <tr>
-      <td><a class="code" href="{{ url_for('verify', doc_id=d.doc_id) }}">{{ d.doc_id }}</a></td>
-      <td>{{ d.title }}</td><td>{{ d.issued_at }}</td>
-      <td>{% if d.revoked_at %}Revoked{% else %}Active{% endif %}</td>
-    </tr>
-    {% endfor %}
-  </table>
-  <p class="small">Tip: open a Doc ID and upload a PDF to check exact match.</p>
-</div></div><div class="footer">© Demo</div></body></html>
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>QR Verifier</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+  <!-- Tailwind (voliteľné, ak používaš) -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- html5-qrcode -->
+  <script src="https://unpkg.com/html5-qrcode"></script>
+</head>
+<body class="min-h-screen bg-gray-50 text-gray-900">
+
+  <header class="p-6 border-b bg-white sticky top-0 z-10">
+    <div class="max-w-4xl mx-auto flex items-center justify-between">
+      <h1 class="text-2xl font-semibold">QR Verifier</h1>
+    </div>
+  </header>
+
+  <main class="max-w-4xl mx-auto p-6 space-y-6">
+    <section class="bg-white p-6 rounded-2xl shadow-sm">
+      <h2 class="text-xl font-semibold mb-4">1) Skenovanie QR kódu cez kameru</h2>
+      <div id="reader" class="rounded-xl overflow-hidden border"></div>
+      <div class="mt-4 flex gap-3">
+        <button id="btnStart" class="px-4 py-2 rounded-lg bg-black text-white">Spustiť skener</button>
+        <button id="btnStop" class="px-4 py-2 rounded-lg bg-gray-200">Zastaviť</button>
+        <select id="cameraSelect" class="border rounded-lg px-3 py-2"></select>
+      </div>
+    </section>
+
+    <section class="bg-white p-6 rounded-2xl shadow-sm">
+      <h2 class="text-xl font-semibold mb-4">2) Nahrať obrázok s QR</h2>
+      <input id="fileInput" type="file" accept="image/*" class="block w-full border rounded-lg p-3">
+    </section>
+
+    <section id="resultSection" class="bg-white p-6 rounded-2xl shadow-sm hidden">
+      <div class="flex items-center justify-between mb-2">
+        <h2 class="text-xl font-semibold">Výsledok</h2>
+        <span id="statusPill" class="px-3 py-1 rounded-full text-sm"></span>
+      </div>
+      <textarea id="decodedText" class="w-full min-h-[120px] border rounded-lg p-3 font-mono text-sm" readonly></textarea>
+      <ul id="matchedRules" class="list-disc pl-6 text-sm mt-2"></ul>
+      <div id="cryptoResult" class="mt-2 text-sm text-gray-600"></div>
+    </section>
+  </main>
+
+  <footer class="max-w-4xl mx-auto p-6 text-xs text-gray-500">
+    <p>© 2025 QR Verifier</p>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="{{ url_for('static', filename='js/config.js') }}"></script>
+  <script src="{{ url_for('static', filename='app.js') }}"></script>
+</body>
+</html>
