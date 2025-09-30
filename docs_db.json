@@ -5,7 +5,7 @@
     "seal": "SAXO-64135-923-1716"
   },
   "DOC-2025-0002": {
-    "sha256": "454faff481f2fcdd2331d7429163d3e2d75959c4185f27f097b4695d10a0730",
+    "sha256": "454faff481f2fcdd2331d7429163d3e2d75959c4185f27f0797b4695d10a0730",
     "title": "DOC-2025-0002 / VHS Devel acc conf VER.pdf",
     "seal": "SAXO-09007-742-3015"
   },
@@ -20,8 +20,4 @@
     "seal": "SAXO-04517-184-1344"
   },
   "DOC-2025-0005": {
-    "sha256": "44e73c29922537836b88cfa747ca9d9ba2e214ea970ba7bc4a1199d971774ef3",
-    "title": "DOC-2025-0005 / Solar acc conf VER.pdf",
-    "seal": "SAXO-66882-428-1463"
-  }
-}
+    "sha256": "803144cfe3d06d2d4e1aabdc04b1be162cca4e0298d2b7b0f33222aaf2239312",
