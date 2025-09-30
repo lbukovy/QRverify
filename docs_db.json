@@ -4,9 +4,7 @@
     "title": "Invoice 2025 TEST",
     "amount": "1234.56",
     "currency": "EUR"
-  }
-}
-{
+  },
   "INV-2025-0001": {
     "sha256": "cd6aca48f9e89f50dd8d77f721e932799567f0a5d161ec9a299be75ca80ca4ee",
     "title": "INV-2025-0001 / PKH acc conf new.pdf"
